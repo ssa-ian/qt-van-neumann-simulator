@@ -1,1 +1,1 @@
-# qt-van-neumann-simulator
+# Simulation of the FDE Cycle built in QT
