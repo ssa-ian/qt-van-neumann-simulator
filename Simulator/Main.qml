@@ -117,7 +117,7 @@ ApplicationWindow {
                             font.bold: true
                         }
                         Text {
-                            text: "0"
+                            text: NumberStore.pcounter
                             font.pixelSize: 14
                         }
                     }
@@ -130,7 +130,9 @@ ApplicationWindow {
                             font.bold: true
                         }
                         Text {
-                            text: "0"
+                            text: NumberStore.iregister
+                            color : NumberStore.decode ? "red" : "black"
+                            font.bold : NumberStore.decode ? true : false
                             font.pixelSize: 14
                         }
                     }
@@ -196,7 +198,31 @@ ApplicationWindow {
         anchors.rightMargin : 20
         anchors.bottomMargin : 20
         spacing : 10
+        Button {
+            id : resetButton
+            width: 80
+            height: 50
 
+            onClicked : {
+                NumberStore.reset()
+            }
+
+            contentItem : Text{
+                text: "Reset"
+                color : "black"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.bold : true
+                font.pixelSize: 16
+            }
+
+
+            background: Rectangle {
+                color: resetButton.pressed ? "#e0e0e0" : (resetButton.hovered ? "#f5f5f5" : "white")
+                border.color: "black"
+                border.width: 1
+            }
+        }
         Button {
             id : clockButton
             width: 50

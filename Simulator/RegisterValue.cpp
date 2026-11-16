@@ -18,3 +18,7 @@ int RegisterValue::getAddress() const{
 bool RegisterValue::isFocused() const{
     return m_isFocused;
 }
+
+void RegisterValue::setFocused(bool b){
+    m_isFocused = b;
+}

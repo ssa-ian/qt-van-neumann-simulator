@@ -23,6 +23,8 @@ public:
     int getAddress() const;
 
     bool isFocused() const;
+
+    void setFocused(bool b);
 };
 
 

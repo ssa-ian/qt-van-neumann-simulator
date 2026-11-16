@@ -1,4 +1,32 @@
 #include "NumberSource.h"
+#include <string_view>
+
+enum class Action{
+    LOAD,
+    ADD,
+    STORE,
+    HALT
+};
+
+Action getAction(std::string_view s){
+    char c {*s.begin()};
+
+    switch(c){
+        case 'L':
+            return Action::LOAD;
+            break;
+        case 'A':
+            return Action::ADD;
+            break;
+        case 'S':
+            return Action::STORE;
+            break;
+        case 'H':
+        default:
+            return Action::HALT;
+            break;
+    }
+}
 
 QVariantList NumberStore::registers() const
 {
@@ -26,11 +54,53 @@ bool NumberStore::getExecute() const{
 
 void NumberStore::setfdecount(){
     if(!halted){
-        emit fdecountChanged();
+
+        if(getExecute()){
+            ++pc;
+            emit pcounterChanged();
+            for(RegisterValue& rv : m_list){
+                rv.setFocused(false);
+                if(rv.getAddress() == pc){
+                    rv.setFocused(true);
+                    iregister = rv.getValue().QString::toStdString();
+                }
+            }
+            emit iregisterChanged();
+            emit registersChanged();
+        }
         ++fdecount;
+        emit fdecountChanged();
+
     }
 
 }
+
+QString NumberStore::getiregister() const{
+    return QString::fromStdString(iregister);
+}
+
+void NumberStore::reset(){
+    for(RegisterValue& rv : m_list){
+        rv.setFocused(false);
+    }
+    m_list.first().setFocused(true);
+    pc = 0;
+    fdecount = -1;
+    accVal = 0;
+    halted = false;
+    iregister = m_list.begin() ->getValue().QString::toStdString();
+
+    emit iregisterChanged();
+    emit registersChanged();
+    emit fdecountChanged();
+    emit accumulatorChanged();
+    emit pcounterChanged();
+}
+
+int NumberStore::getCounter() const{
+    return pc;
+}
+
 
 int NumberStore::getAccVal() const{
     return accVal;

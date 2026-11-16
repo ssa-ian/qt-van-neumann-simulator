@@ -5,6 +5,7 @@
 #include <QDebug>
 #include "RegisterValue.h"
 #include <QVariant>
+#include <string>
 
 class NumberStore : public QObject {
     Q_OBJECT
@@ -15,6 +16,8 @@ class NumberStore : public QObject {
     Q_PROPERTY(bool decode READ getDecode NOTIFY fdecountChanged)
     Q_PROPERTY(bool execute READ getExecute NOTIFY fdecountChanged)
     Q_PROPERTY(int accumulator READ getAccVal NOTIFY accumulatorChanged)
+    Q_PROPERTY(int pcounter READ getCounter NOTIFY pcounterChanged)
+    Q_PROPERTY(QString iregister READ getiregister NOTIFY iregisterChanged)
 public:
     explicit NumberStore(QObject *parent = nullptr) : QObject(parent)
     {
@@ -24,11 +27,17 @@ public:
 
     QList<RegisterValue> registersTest() const;
 
+    QString getiregister() const;
+
     bool getFetch() const;
     bool getDecode() const;
     bool getExecute() const;
 
     Q_INVOKABLE void setfdecount();
+
+    Q_INVOKABLE void reset();
+
+    int getCounter() const;
 
     int getAccVal() const;
 
@@ -36,6 +45,8 @@ signals:
     void registersChanged();
     void fdecountChanged();
     void accumulatorChanged();
+    void pcounterChanged();
+    void iregisterChanged();
 
 private:
     QList<RegisterValue> m_list {
@@ -52,5 +63,9 @@ private:
 
     int accVal = 0;
 
+    int pc = 0;
+
     bool halted = false;
+
+    std::string iregister {m_list.begin() ->getValue().QString::toStdString()};
 };
