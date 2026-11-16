@@ -1,7 +1,7 @@
 #include "RegisterValue.h"
 
-RegisterValue::RegisterValue(int address, QString value)
-    : m_value{value} , m_address{address}
+RegisterValue::RegisterValue(int address, QString value, bool isFocused)
+    : m_value{value} , m_address{address}, m_isFocused{isFocused}
 {
 
 }
@@ -13,4 +13,8 @@ QString RegisterValue::getValue() const{
 
 int RegisterValue::getAddress() const{
     return m_address;
+}
+
+bool RegisterValue::isFocused() const{
+    return m_isFocused;
 }
