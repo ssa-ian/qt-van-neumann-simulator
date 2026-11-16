@@ -22,3 +22,7 @@ bool RegisterValue::isFocused() const{
 void RegisterValue::setFocused(bool b){
     m_isFocused = b;
 }
+
+void RegisterValue::setValue(std::string_view sv){
+    m_value = QString::fromStdString(std::string{sv});
+}

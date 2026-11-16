@@ -51,11 +51,11 @@ signals:
 private:
     QList<RegisterValue> m_list {
         {0,"LOAD 6", true},
-        {1,"ADD 2"} ,
+        {1,"ADD 5"} ,
         {2,"STORE 7"},
         {3,"HALT"},
         {4,"0"},
-        {5,"0"},
+        {5,"2"},
         {6,"2"},
         {7,"0"}};
 

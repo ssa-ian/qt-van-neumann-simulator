@@ -25,6 +25,8 @@ public:
     bool isFocused() const;
 
     void setFocused(bool b);
+
+    void setValue(std::string_view sv);
 };
 
 

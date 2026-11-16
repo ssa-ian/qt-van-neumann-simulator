@@ -1,5 +1,6 @@
 #include "NumberSource.h"
 #include <string_view>
+#include <sstream>
 
 enum class Action{
     LOAD,
@@ -54,13 +55,52 @@ bool NumberStore::getExecute() const{
 
 void NumberStore::setfdecount(){
     if(!halted){
+        if(getDecode()){
+            Action cur = getAction(iregister);
+            std::size_t spacepos = iregister.find(' ');
+            int operand {};
+            if (spacepos != std::string::npos) {
+                operand = std::stoi(iregister.substr(spacepos + 1));
+            }
+
+            switch(cur){
+                case Action::ADD:
+                    for(RegisterValue& rv : m_list){
+                        if(rv.getAddress() == operand && !halted){
+                            accVal += std::stoi(rv.getValue().QString::toStdString());
+                        }
+                    }
+                    emit accumulatorChanged();
+                    break;
+                case Action::LOAD:
+                    for(RegisterValue& rv : m_list){
+                        if(rv.getAddress() == operand && !halted){
+                            accVal = std::stoi(rv.getValue().QString::toStdString());
+                        }
+                    }
+                    emit accumulatorChanged();
+                    break;
+                case Action::STORE:
+                    for(RegisterValue& rv : m_list){
+                        if(rv.getAddress() == operand && !halted){
+                            rv.setValue(std::to_string(accVal));
+                        }
+                    }
+                    emit registersChanged();
+                    break;
+                case Action::HALT:
+                default:
+                    halted = true;
+                    break;
+            }
+        }
 
         if(getExecute()){
             ++pc;
             emit pcounterChanged();
             for(RegisterValue& rv : m_list){
                 rv.setFocused(false);
-                if(rv.getAddress() == pc){
+                if(rv.getAddress() == pc && !halted){
                     rv.setFocused(true);
                     iregister = rv.getValue().QString::toStdString();
                 }
