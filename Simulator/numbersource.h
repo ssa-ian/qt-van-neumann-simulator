@@ -59,7 +59,7 @@ private:
         {6,"2"},
         {7,"0"}};
 
-    int fdecount = -1;
+    int fdecount = 0;
 
     int accVal = 0;
 

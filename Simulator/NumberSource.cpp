@@ -85,7 +85,7 @@ void NumberStore::reset(){
     }
     m_list.first().setFocused(true);
     pc = 0;
-    fdecount = -1;
+    fdecount = 0;
     accVal = 0;
     halted = false;
     iregister = m_list.begin() ->getValue().QString::toStdString();
