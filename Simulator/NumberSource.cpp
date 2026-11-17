@@ -1,6 +1,5 @@
 #include "NumberSource.h"
 #include <string_view>
-#include <sstream>
 
 enum class Action{
     LOAD,
@@ -123,6 +122,7 @@ void NumberStore::reset(){
     for(RegisterValue& rv : m_list){
         rv.setFocused(false);
     }
+    m_list.last().setValue(std::to_string(0));
     m_list.first().setFocused(true);
     pc = 0;
     fdecount = 0;
